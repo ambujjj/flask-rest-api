@@ -79,7 +79,14 @@ def newcustomer():
         mysql.session.commit()
         return redirect('/customers')
     return render_template('newcustomer.html')
-
+@app.route('/orderhistory', methods=['GET', 'POST'])
+def orderhistory():
+    if request.method =='POST':
+        cIDDetails = request.form
+        cid = cIDDetails["CustomerID"]
+        orderss = Orders.query.filter_by(CustomerID=cid).first_or_404(description="No order from this Customer")
+        return str(orderss)
+    return render_template('orderhistory.html')
 @app.route('/customers')
 def customers():
     #cur = mysql.connection.cursor()
